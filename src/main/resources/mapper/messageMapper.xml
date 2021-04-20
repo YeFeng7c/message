@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sql映射文件，用于编写sql语句 -->
+<mapper namespace="com.yefeng.message.mapper.MessageMapper">
+
+    <insert id="saveMessage" parameterType="com.yefeng.message.model.MessageModel" >
+        insert into message(
+            message_name,
+            message_info,
+            message_time)
+            value
+            (
+            #{message_name},
+            #{message_info},
+            #{message_time}
+            )
+    </insert>
+
+    <select id="findAllMessage"  parameterType="com.yefeng.message.model.MessageModel" resultType="com.yefeng.message.model.MessageModel">
+        select
+            *
+        from
+            message
+    </select>
+</mapper>
