@@ -13,9 +13,6 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageMapper messageMapper;
 
-    public MessageServiceImpl() {
-    }
-
     public boolean saveMessage(String message_name, String message_info, String message_time) {
         return messageMapper.saveMessage(message_name, message_info, message_time);
     }

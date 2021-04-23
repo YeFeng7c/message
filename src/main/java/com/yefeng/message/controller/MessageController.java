@@ -27,9 +27,6 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    public MessageController() {
-    }
-
     @PostMapping({"/info"})
     public ResultDto<?> saveMessage(@RequestParam(required = false) String message_name, @RequestParam(required = false) String message_info, String message_time) {
         if (!StringUtils.isNotBlank(message_name)) {
