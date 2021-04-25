@@ -10,16 +10,14 @@ import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@Controller
+@RestController
 @Api(
         tags = {"用户接口"}
 )
@@ -29,26 +27,24 @@ public class UserController {
     @Autowired
     private MailService mailService;
 
-    @Autowired
-    private UserMapper userMapper;
-
     @PostMapping("/sendEmail")
     @ResponseBody
-    public ResultDto<?> sendEmail(String email, HttpSession httpSession) {
-        String diffEmail = "[1-9]\\d{7,10}@qq\\.com";
+    public ResultDto<?> sendEmail(String email, HttpServletRequest request){
         if(!StringUtils.isNotBlank(email)){
             return ResultDto.errorOf(ResultCode.USER_EMAIL_NOT_NULL);
-        } else if(!Pattern.matches(diffEmail,email)){
-            return ResultDto.errorOf(ResultCode.USER_EMAIL_ERROR);
-        } else {
-            mailService.sendMimeMail(email, httpSession);
-            return ResultDto.successOf(ResultCode.USER_EMAIL_SEND_SUCCESS);
         }
+        String diffEmail = "[1-9]\\d{7,10}@qq\\.com";
+        if(!Pattern.matches(diffEmail,email)){
+            return ResultDto.errorOf(ResultCode.USER_EMAIL_ERROR);
+        }
+            mailService.sendMimeMail(email, request);
+            return ResultDto.successOf(ResultCode.USER_EMAIL_SEND_SUCCESS);
+
     }
 
     @PostMapping("/regist")
     @ResponseBody
-    public ResultDto<?> regist(UserVo userVo, HttpSession session) {
+    public ResultDto<?> regist(UserVo userVo, HttpServletRequest request){
         if(!StringUtils.isNotBlank(userVo.getUsername())){
             return ResultDto.errorOf(ResultCode.USER_NAME_NOT_NULL);
         }
@@ -65,22 +61,20 @@ public class UserController {
         if(!StringUtils.isNotBlank(userVo.getPassword())){
             return ResultDto.errorOf(ResultCode.USER_PASSWORD_NOT_NULL);
         }
-        String code = (String) session.getAttribute("code");
-        if(!code.equals(userVo.getCode())){
-            return ResultDto.errorOf(ResultCode.USER__CODE_ERROR);
-        }
         List<User> list = mailService.findUserByEmail(userVo.getEmail());
         if(list.size() > 0){
             return ResultDto.errorOf(ResultCode.USER_EMAIL_EXIST);
-        }else {
-            mailService.registered(userVo, session);
+        }
+        boolean success = mailService.registered(userVo,request);
+        if(success) {
             return ResultDto.successOf(ResultCode.USER_REGIST_SUCCESS);
         }
+        return ResultDto.errorOf(ResultCode.USER__CODE_ERROR);
     }
 
     @PostMapping("/login")
     @ResponseBody
-    public ResultDto<?> login(String email, String password) {
+    public ResultDto<?> login(String email, String password){
         if(!StringUtils.isNotBlank(email)){
             return ResultDto.errorOf(ResultCode.USER_EMAIL_NOT_NULL);
         }
@@ -91,12 +85,10 @@ public class UserController {
         if(!StringUtils.isNotBlank(password)){
             return ResultDto.errorOf(ResultCode.USER_PASSWORD_NOT_NULL);
         }
-        User user = userMapper.queryByEmail(email);
-        if(!password.equals(user.getPassword())){
-            return ResultDto.errorOf(ResultCode.USER_REGIST_FILED);
-        }else {
-            mailService.loginIn(email, password);
-            return ResultDto.successOf(ResultCode.USER_REGIST_SUCCESS);
+        boolean success = mailService.loginIn(email,password);
+        if(success){
+            return ResultDto.successOf(ResultCode.USER_LOGIN_SUCCESS);
         }
+        return ResultDto.successOf(ResultCode.USER_LOGIN_FILED);
     }
 }

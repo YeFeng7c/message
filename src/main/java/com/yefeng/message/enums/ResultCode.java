@@ -19,7 +19,9 @@ public enum ResultCode implements IFResult {
     USER_REGIST_SUCCESS(4204,"注册成功"),
     USER_CODE_NULL(4028,"验证码不能为空"),
     USER__CODE_ERROR(4029,"验证码不正确"),
-    USER_REGIST_FILED(4205,"邮箱或密码错误")
+    USER_CODE_FAILED(4030,"验证码已过期"),
+    USER_LOGIN_FILED(4205,"邮箱或密码错误"),
+    USER_LOGIN_SUCCESS(4031,"登录成功")
     ;
 
     private final Integer code;

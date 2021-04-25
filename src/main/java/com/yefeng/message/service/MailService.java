@@ -3,12 +3,14 @@ import com.yefeng.message.mapper.UserMapper;
 import com.yefeng.message.model.User;
 import com.yefeng.message.vo.UserVo;
 import com.yefeng.message.vo.UserVoToUser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Random;
@@ -28,27 +30,25 @@ public class MailService {
     /**
      * 给前端输入的邮箱，发送验证码
      * @param email
-     * @param session
+     * @param request
      * @return
      */
-    public boolean sendMimeMail( String email, HttpSession session) {
+    public boolean sendMimeMail( String email, HttpServletRequest request) {
         try {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
-
             mailMessage.setSubject("验证码邮件");//主题
             //生成随机数
             String code = randomCode();
-
             //将随机数放置到session中
-            session.setAttribute("email",email);
-            session.setAttribute("code",code);
-
+//            session.setAttribute("email",email);
+//            session.setAttribute("code",code);
+            request.getServletContext().setAttribute("email",email);
+            request.getServletContext().setAttribute("code",code);
+//            System.out.println("接受的email" + email);
+//            System.out.println("存入session的email"+request.getServletContext().getAttribute("email"));
             mailMessage.setText("您收到的验证码是："+code);//内容
-
             mailMessage.setTo(email);//发给谁
-
             mailMessage.setFrom(from);//你自己的邮箱
-
             mailSender.send(mailMessage);//发送
             return  true;
         }catch (Exception e){
@@ -73,22 +73,26 @@ public class MailService {
     /**
      * 检验验证码是否一致
      * @param userVo
-     * @param session
+     * @param request
      * @return
      */
-    public boolean registered(UserVo userVo, HttpSession session){
+    public boolean registered(UserVo userVo, HttpServletRequest request){
         //获取session中的验证信息
-        String email = (String) session.getAttribute("email");
-        String code = (String) session.getAttribute("code");
+        String email = (String) request.getServletContext().getAttribute("email");
+        String code = (String) request.getServletContext().getAttribute("code");
 
         //获取表单中的提交的验证信息
         String voCode = userVo.getCode();
+        String voEmail = userVo.getEmail();
 
+//        System.out.println("发送的email" + email);
+//        System.out.println("输入的email" + voEmail);
         //如果email数据为空，或者不一致，注册失败
-        if (email == null || email.isEmpty()){
+        if (!StringUtils.isNotBlank(email)) {
             //return "error,请重新注册";
             return false;
-        }else if (!code.equals(voCode)){
+        }
+        else if (!code.equals(voCode)||!email.equals(voEmail)){
             //return "error,请重新注册";
             return false;
         }
@@ -122,7 +126,6 @@ public class MailService {
     }
 
     public List<User> findUserByEmail(String email){
-        List<User> list = userMapper.findUserByEmail(email);
-        return list;
+        return userMapper.findUserByEmail(email);
     }
 }

@@ -15,4 +15,10 @@
         where email = #{email}
     </select>
 
+    <select id="findUserByEmail" resultType="com.yefeng.message.model.User">
+        select *
+        from user
+        where email = #{email}
+    </select>
+
 </mapper>
