@@ -1,4 +1,4 @@
-﻿package com.yefeng.message.controller;
+package com.yefeng.message.controller;
 
 import com.yefeng.message.dto.ResultDto;
 import com.yefeng.message.enums.ResultCode;
@@ -37,8 +37,8 @@ public class UserController {
         if(!Pattern.matches(diffEmail,email)){
             return ResultDto.errorOf(ResultCode.USER_EMAIL_ERROR);
         }
-            mailService.sendMimeMail(email, request);
-            return ResultDto.successOf(ResultCode.USER_EMAIL_SEND_SUCCESS);
+        mailService.sendMimeMail(email, request);
+        return ResultDto.successOf(ResultCode.USER_EMAIL_SEND_SUCCESS);
 
     }
 
@@ -74,7 +74,7 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResultDto<?> login(String email, String password, HttpServletRequest request){
+    public ResultDto<?> login(String email, String password, HttpSession session){
         if(!StringUtils.isNotBlank(email)){
             return ResultDto.errorOf(ResultCode.USER_EMAIL_NOT_NULL);
         }
@@ -88,20 +88,19 @@ public class UserController {
         boolean success = mailService.loginIn(email,password);
 
         if(success){
-            request.getServletContext().setAttribute("email",email);
+            session.setAttribute("email",email);
             return ResultDto.successOf(ResultCode.USER_LOGIN_SUCCESS);
         }
         return ResultDto.successOf(ResultCode.USER_LOGIN_FILED);
     }
 
-   @PostMapping("/findUserByEmail")
+    @PostMapping("/findUserByEmail")
     @ResponseBody
-    public ResultDto<?> login(HttpServletRequest request){
-        String email = (String) request.getServletContext().getAttribute("email");
+    public ResultDto<?> login(String email){
         if(!StringUtils.isNotBlank(email)){
             return ResultDto.errorOf(ResultCode.USER_EMAIL_NOT_NULL);
         }
-       List<User> list = mailService.findUserByEmail(email);
-       return ResultDto.successWithData(ResultCode.USER_LOGIN_SUCCESS,list);
+        List<User> list = mailService.findUserByEmail(email);
+        return ResultDto.successWithData(ResultCode.USER_LOGIN_SUCCESS,list);
     }
 }
