@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sql映射文件，用于编写sql语句 -->
+<mapper namespace="com.yefeng.message.mapper.ReplyMapper">
+
+    <insert id="insertReplyMessage" parameterType="com.yefeng.message.model.Reply" >
+        insert into reply(
+        message_id,
+        reply_name,
+        reply_info,
+        reply_date)
+        value
+        (
+        #{message_id},
+        #{reply_name},
+        #{reply_info},
+        #{reply_date}
+        )
+    </insert>
+
+    <select id="findReplyMessage"  parameterType="com.yefeng.message.model.Reply" resultType="com.yefeng.message.model.Reply">
+        select
+        *
+        from
+        reply
+
+    </select>
+</mapper>
