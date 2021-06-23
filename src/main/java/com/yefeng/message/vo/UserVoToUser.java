@@ -2,6 +2,9 @@ package com.yefeng.message.vo;
 
 import com.yefeng.message.model.User;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class UserVoToUser {
 
     /**
@@ -18,7 +21,10 @@ public class UserVoToUser {
         user.setUsername(userVo.getUsername());
         user.setPassword(userVo.getPassword());
         user.setEmail(userVo.getEmail());
-
+        Date dt = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String time = sdf.format(dt);
+        user.setRegist_date(time);
         // 返回包装后的对象
         return user;
     }

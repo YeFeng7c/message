@@ -1,5 +1,6 @@
 package com.yefeng.message.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.yefeng.message.dto.ResultDto;
 import com.yefeng.message.enums.ResultCode;
 import com.yefeng.message.model.Reply;
@@ -48,6 +49,7 @@ public class ReplyController {
 
     @PostMapping("/findReplayMessage")
     public ResultDto<?> findReplyMessage(Reply reply){
+      //  PageHelper.startPage(pageNum, pageSize);
         List<Reply> list = replyService.findReplyMessage(reply);
         return ResultDto.successWithData(ResultCode.REPLY_SUCCESS,list);
     }

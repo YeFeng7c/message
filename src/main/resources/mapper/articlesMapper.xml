@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- sql映射文件，用于编写sql语句 -->
+<mapper namespace="com.yefeng.message.mapper.ArticlesMapper">
+
+    <select id="findAllArticles"  resultType="com.yefeng.message.model.Articles">
+        select
+        *
+        from
+        articles
+
+    </select>
+
+    <select id="findArticlesById"  parameterType="com.yefeng.message.model.Articles" resultType="com.yefeng.message.model.Articles">
+        select
+        *
+        from
+        articles
+        where
+        articles_id=#{articles_id}
+    </select>
+
+    <select id="findArticlesByKinds"  parameterType="com.yefeng.message.model.Articles" resultType="com.yefeng.message.model.Articles">
+        select
+        *
+        from
+        articles
+        where
+        articles_classification=#{articles_classification}
+    </select>
+</mapper>

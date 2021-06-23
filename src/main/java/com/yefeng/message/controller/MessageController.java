@@ -48,8 +48,8 @@ public class MessageController {
     }
 
     @PostMapping({"/findAllMessage"})
-    public ResultDto<?> findAllMessage(MessageModel messageModel) {
-        List<MessageModel> list = messageService.findAllMessage(messageModel);
+    public ResultDto<?> findAllMessage() {
+        List<MessageModel> list = messageService.findAllMessage();
         return ResultDto.successWithData(ResultCode.MESSAGE_FIND_ALL, list);
     }
 }

@@ -9,6 +9,8 @@ public class UserVo {
     private String password;
 
     private String email;
+
+    private String regist_date;
     //    验证码
     private String code;
 

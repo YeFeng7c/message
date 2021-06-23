@@ -7,5 +7,5 @@ public interface MessageService {
 
     boolean saveMessage(String message_name, String message_info, String message_time);
 
-    List<MessageModel> findAllMessage(MessageModel messageModel);
+    List<MessageModel> findAllMessage();
 }

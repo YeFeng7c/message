@@ -5,6 +5,7 @@ import com.yefeng.message.enums.ResultCode;
 import com.yefeng.message.mapper.UserMapper;
 import com.yefeng.message.model.User;
 import com.yefeng.message.service.MailService;
+import com.yefeng.message.utils.TokenUtils;
 import com.yefeng.message.vo.UserVo;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +90,8 @@ public class UserController {
 
         if(success){
             session.setAttribute("email",email);
-            return ResultDto.successOf(ResultCode.USER_LOGIN_SUCCESS);
+            String token= TokenUtils.sign(email);
+            return ResultDto.successWithData(ResultCode.USER_LOGIN_SUCCESS,token);
         }
         return ResultDto.successOf(ResultCode.USER_LOGIN_FILED);
     }
@@ -102,5 +104,14 @@ public class UserController {
         }
         List<User> list = mailService.findUserByEmail(email);
         return ResultDto.successWithData(ResultCode.USER_LOGIN_SUCCESS,list);
+    }
+
+    @PostMapping("/logout")
+    @ResponseBody
+    public ResultDto<?> logout(HttpSession session){
+        session.removeAttribute("email");
+        //让session立即失效
+        session.invalidate();
+        return ResultDto.successOf(ResultCode.USER_LOGOUT_SUCCESS);
     }
 }

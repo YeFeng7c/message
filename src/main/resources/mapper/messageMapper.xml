@@ -18,7 +18,7 @@
             )
     </insert>
 
-    <select id="findAllMessage"  parameterType="com.yefeng.message.model.MessageModel" resultType="com.yefeng.message.model.MessageModel">
+    <select id="findAllMessage"  resultType="com.yefeng.message.model.MessageModel">
         select
             *
         from

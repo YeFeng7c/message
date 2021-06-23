@@ -17,8 +17,8 @@ public class MessageServiceImpl implements MessageService {
         return messageMapper.saveMessage(message_name, message_info, message_time);
     }
 
-    public List<MessageModel> findAllMessage(MessageModel messageModel) {
-        List<MessageModel> list = messageMapper.findAllMessage(messageModel);
+    public List<MessageModel> findAllMessage() {
+        List<MessageModel> list = messageMapper.findAllMessage();
         return list;
     }
 }
