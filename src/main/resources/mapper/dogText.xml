@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefeng.message.mapper.DogTextMapper">
+
+
+    <select id="findDogTextByRandom" resultType="com.yefeng.message.model.DogText">
+        SELECT
+        dogText_info
+        FROM
+        dogText
+        WHERE
+        dogText_type = #{dogText_type}
+        ORDER BY
+        RAND()
+        LIMIT 1
+    </select>
+
+    <select id="findDogTextType" resultType="com.yefeng.message.model.DogText">
+        SELECT
+        dogText_type,dogText_type_name
+        FROM
+        dogText
+        GROUP BY
+        dogText_type,dogText_type_name
+    </select>
+</mapper>

@@ -36,30 +36,32 @@ public class ArticlesController {
 
     /**
      * 分页获取所有文章列表
+     *
      * @param pageRequest
      * @return
      */
     @PostMapping("/findAllArticles")
-    public ResultDto<?> findAllArticles(PageRequest pageRequest){
+    public ResultDto<?> findAllArticles(PageRequest pageRequest) {
         int pageNum = pageRequest.getPageNum();
         int pageSize = pageRequest.getPageSize();
         PageHelper.startPage(pageNum, pageSize);
         List<Articles> list = articlesService.findAllArticles();
         PageInfo<Articles> articlesPageInfo = new PageInfo<>(list);
         List<ArticlesKinds> articlesKinds = articlesKindsService.findAllArticlesKinds();
-        Map<String,Object> map = new HashMap<>();
-        map.put("articlesKinds",articlesKinds);
-        map.put("articlesPageInfo",articlesPageInfo);
-        return ResultDto.successWithData(ResultCode.ARTICLES_FIND_SUCCESS,map);
+        Map<String, Object> map = new HashMap<>();
+        map.put("articlesKinds", articlesKinds);
+        map.put("articlesPageInfo", articlesPageInfo);
+        return ResultDto.successWithData(ResultCode.ARTICLES_FIND_SUCCESS, map);
     }
 
     /**
      * 根据ID判断文章详情
+     *
      * @param articles_id
      * @return
      */
     @PostMapping("/findArticlesById")
-    public ResultDto<?> findArticlesById(int articles_id){
+    public ResultDto<?> findArticlesById(int articles_id) {
         List<Articles> list = articlesService.findArticlesById(articles_id);
         return list.size() > 0 ? ResultDto.successWithData(ResultCode.ARTICLES_FIND_INFO_SUCCESS, list)
                 : ResultDto.errorOf(ResultCode.ARTICLES_NOT_EXIST);
@@ -67,16 +69,17 @@ public class ArticlesController {
 
     /**
      * 根据文章分类分页获取文章列表
+     *
      * @param articles_classification
      * @return
      */
     @PostMapping("/findArticlesByKinds")
-    public ResultDto<?> findArticlesByKinds(int articles_classification, PageRequest pageRequest){
+    public ResultDto<?> findArticlesByKinds(int articles_classification, PageRequest pageRequest) {
         int pageNum = pageRequest.getPageNum();
         int pageSize = pageRequest.getPageSize();
         PageHelper.startPage(pageNum, pageSize);
         List<Articles> list = articlesService.findArticlesByKinds(articles_classification);
         PageInfo<Articles> articlesPageInfo = new PageInfo<>(list);
-        return ResultDto.successWithData(ResultCode.ARTICLES_FIND_SUCCESS,articlesPageInfo);
+        return ResultDto.successWithData(ResultCode.ARTICLES_FIND_SUCCESS, articlesPageInfo);
     }
 }

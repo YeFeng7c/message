@@ -108,6 +108,48 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.4</version>
         </dependency>
+        <!--日历-->
+        <dependency>
+            <groupId>cn.6tail</groupId>
+            <artifactId>lunar</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+        <!--IP-->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+        <!--PhoneNumber-->
+        <dependency>
+            <groupId>me.ihxq.projects</groupId>
+            <artifactId>phone-number-geo</artifactId>
+            <version>1.0.8-202108</version>
+        </dependency>
+        <!--拼音-->
+        <dependency>
+            <groupId>net.duguying.pinyin</groupId>
+            <artifactId>pinyin</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--WeChat-->
+        <dependency>
+            <groupId>com.github.icecooly</groupId>
+            <artifactId>WeixinAutoChat</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!--滑块验证码-->
+        <dependency>
+            <groupId>cloud.tianai.captcha</groupId>
+            <artifactId>tianai-captcha-springboot-starter</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- 滑块验证码 -->
+        <dependency>
+            <groupId>cloud.tianai.captcha</groupId>
+            <artifactId>tianai-captcha</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -126,5 +168,4 @@
             </resource>
         </resources>
     </build>
-
 </project>
